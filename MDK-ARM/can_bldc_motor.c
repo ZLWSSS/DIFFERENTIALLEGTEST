@@ -7,7 +7,7 @@
 #include "stored_data.h"
 #include "tim.h"
 
-static CAN_TxHeaderTypeDef  BLDC_tx_message;
+CAN_TxHeaderTypeDef  BLDC_tx_message;
 BLDC_Measure_TypeDef BLDC_Motor;
 uint8_t BLDC_tx_message_data[8];
 void (*CAN_SETMESSAGES[6])(void);
@@ -210,10 +210,14 @@ void CAN_BLDC_cmd(CAN_HandleTypeDef *hcan ,uint8_t* BLDC_tx_message_data, float 
 	HAL_CAN_AddTxMessage(hcan, &BLDC_tx_message, BLDC_tx_message_data, &send_mail_box);
 }
 
+int loop_for = 0;
+int loop_reverse = 0;
+
 void Control_motors(RF if_reverse)
 {
 	if(if_reverse == forward)
 	{
+		loop_for ++;
 		data_index = 6 * line_iter;
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index], 
 																						 -target_status[data_index + 3], 
@@ -244,6 +248,7 @@ void Control_motors(RF if_reverse)
 	}
 	else if (if_reverse == reverse)
 	{
+		loop_reverse++;
 		line_iter--;
 		if(line_iter == -1)
 		{
@@ -251,22 +256,22 @@ void Control_motors(RF if_reverse)
 			return;
 		}
 		data_index = 6 * line_iter;
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, data_index, 
-																						 data_index + 3, 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index], 
+																						 -target_status[data_index + 3], 
 																						 100,
 																						 1.5,
 																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, data_index + 1,  
-																						 data_index + 4,
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 1],  
+																						 -target_status[data_index + 4],
 																						 100,
 																						 1.5, 
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, data_index + 2 , 
-																							 data_index + 5, 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 2] , 
+																							 -target_status[data_index + 5], 
 																							 100,
 																							 1.5, 
 																							 0, 
@@ -421,6 +426,31 @@ void Check_Motor_Status()
 const BLDC_Measure_TypeDef* get_BLDC_Measure()
 {
 	return &BLDC_Motor;
+}
+
+void control_zero()
+{
+	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, 0, 
+																						 0, 
+																						 0,
+																						 0,
+																						 0,
+																						 CAN_SETMESSAGES[0]);	
+		delay_us(CAN_DELAY_TIME);
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, 0, 
+																						 0, 
+																						 0,
+																						 0,
+																						 0 ,
+																						 CAN_SETMESSAGES[1]);
+		delay_us(CAN_DELAY_TIME);
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, 0, 
+																						 0, 
+																						 0,
+																						 0,
+																						 0, 
+																							 CAN_SETMESSAGES[2]);									 
+		delay_us(CAN_DELAY_TIME);
 }
 
 	
