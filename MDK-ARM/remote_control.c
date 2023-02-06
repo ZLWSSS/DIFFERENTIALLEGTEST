@@ -191,5 +191,14 @@ void check_ready(void)
 				tim_triggered = 0;
 				break;
 		}
+		
+		if(rc_ctrl.rc.ch[1] == 660)
+		{
+			HAL_TIM_Base_Start_IT(&htim3);
+		}
+		else if(rc_ctrl.rc.ch[1] == -660)
+		{
+			HAL_TIM_Base_Stop_IT(&htim3);
+		}
 	}
 }

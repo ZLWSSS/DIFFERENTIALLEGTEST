@@ -25,14 +25,6 @@ void init_applications(void)
 void applications_processing(void)
 {
 	Control_motors(run_direction);
-	USB_DATA_2_COMMAND(&USB_TX_COMMAND);
-	uint32touint8((uint32_t*)&USB_TX_COMMAND, TX_BUFFER, USB_MESSAGE_CONVERT_32_2_8);
-	usb_send_counter++;
-	if(usb_send_counter == 2)
-	{
-		USBD_CUSTOM_HID_SendReport_FS(TX_BUFFER, USB_MESSAGE_TX_LENGTH);
-		usb_send_counter = 0;
-	}
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -41,5 +33,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		tick_counter++;
 		applications_processing();
+	}
+	else if(htim->Instance == TIM3)
+	{
+		USB_DATA_2_COMMAND(&USB_TX_COMMAND);
+		uint32touint8((uint32_t*)&USB_TX_COMMAND, TX_BUFFER, USB_MESSAGE_CONVERT_32_2_8);
+		USBD_CUSTOM_HID_SendReport_FS(TX_BUFFER, USB_MESSAGE_TX_LENGTH);
 	}
 }
