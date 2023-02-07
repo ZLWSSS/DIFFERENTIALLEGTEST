@@ -99,6 +99,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 	init_applications();
+	Check_Motor_Status();
   /* USER CODE END 2 */
 
   /* Infinite loop */

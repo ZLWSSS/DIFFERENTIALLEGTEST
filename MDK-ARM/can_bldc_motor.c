@@ -12,16 +12,18 @@ BLDC_Measure_TypeDef BLDC_Motor;
 uint8_t BLDC_tx_message_data[8];
 void (*CAN_SETMESSAGES[6])(void);
 uint8_t enable = 0;
-const uint16_t CAN_DELAY_TIME = 130;
+const uint16_t CAN_DELAY_TIME = 250;
 const uint16_t CAN_ENABLE_DELAY = 10;
 const float initial_position[6] = {0, 0, 0, 0, 0, 0}; 
-const float position_vari = 0.05; //abs
+const float position_vari = 0.01; //abs
 int line_iter = 0;
 int data_index = 0;
-fp32 kp = 10.;
-fp32 kd = 0.5;
+fp32 kp = 400.;
+fp32 kd = 20.;
+fp32 positive_or_negative = 1.;
 int call_loop_1;
 int call_loop_2;
+int8_t first_run = 1;
 //…Ë÷√Œª÷√
 
 extern CAN_HandleTypeDef hcan1;
@@ -217,25 +219,32 @@ int loop_reverse = 0;
 
 void Control_motors(RF if_reverse)
 {
+	if(first_run)
+	{
+		prepare_to_test();
+		delay_ms(2000);
+		return;
+	}
+	
 	if(if_reverse == forward)
 	{
 		data_index = 6 * line_iter;
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index], 
-																						 -target_status[data_index + 3], 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index], 
+																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
 																						 kd,
 																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 1],  
-																						 -target_status[data_index + 4],
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 1],  
+																						 positive_or_negative * target_status[data_index + 4],
 																						 kp,
 																						 kd, 
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 2], 
-																							 -target_status[data_index + 5], 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2], 
+																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
 																							 0, 
@@ -257,22 +266,22 @@ void Control_motors(RF if_reverse)
 			return;
 		}
 		data_index = 6 * line_iter;
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index], 
-																						 -target_status[data_index + 3], 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index], 
+																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
 																						 kd,
 																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 1],  
-																						 -target_status[data_index + 4],
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 1],  
+																						 positive_or_negative * target_status[data_index + 4],
 																						 kp,
 																						 kd, 
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 2] , 
-																							 -target_status[data_index + 5], 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] , 
+																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
 																							 0, 
@@ -384,30 +393,30 @@ void Set_Zero_Position()
 
 void Check_Motor_Status()
 {
-	uint8_t check_zero = 0;
-	while(1)
-	{
-		check_zero = 0;
-		for(uint8_t i = 0; i < 6; i++)
-		{
-			if((BLDC_Motor.error_zero_flag[i]) == 1)
-			{
-				Error_Handler();
-			}
-			
-			if(BLDC_Motor.zero_flag[i] == 1)
-			{
-				check_zero++;
-			}
-		}
-		if(6 == check_zero)
-			break;
-	}
+//	uint8_t check_zero = 0;
+//	while(1)
+//	{
+//		check_zero = 0;
+//		for(uint8_t i = 0; i < 6; i++)
+//		{
+//			if((BLDC_Motor.error_zero_flag[i]) == 1)
+//			{
+//				Error_Handler();
+//			}
+//			
+//			if(BLDC_Motor.zero_flag[i] == 1)
+//			{
+//				check_zero++;
+//			}
+//		}
+//		if(6 == check_zero)
+//			break;
+//	}
 	
 	while(1)
 	{
 		motor_status_flag = 0;
-		for(uint8_t i = 0; i < 6; i++)
+		for(uint8_t i = 0; i < 3; i++)
 		{
 			if((BLDC_Motor.Position[i] < (initial_position[i] + position_vari)) && (BLDC_Motor.Position[i] > (initial_position[i] - position_vari)))
 			{
@@ -415,7 +424,7 @@ void Check_Motor_Status()
 			}
 		}
 		
-		if(motor_status_flag == 6) //ready
+		if(motor_status_flag == 3) //ready
 		{
 			turn_on_all_leds();
 			break;
@@ -452,6 +461,31 @@ void control_zero()
 																						 0, 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
+}
+
+void prepare_to_test()
+{
+	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[0], 
+																						 positive_or_negative * target_status[3], 
+																						 kp,
+																						 kd,
+																						 0,
+																						 CAN_SETMESSAGES[0]);	
+	delay_us(CAN_DELAY_TIME);
+	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[1],  
+																						 positive_or_negative * target_status[4],
+																						 kp,
+																						 kd, 
+																						 0, 
+																						 CAN_SETMESSAGES[1]);
+	delay_us(CAN_DELAY_TIME);
+	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[2] , 
+																							 positive_or_negative * target_status[5], 
+																							 kp,
+																							 kd, 
+																							 0, 
+																							 CAN_SETMESSAGES[2]);									 
+	delay_us(CAN_DELAY_TIME);
 }
 
 	

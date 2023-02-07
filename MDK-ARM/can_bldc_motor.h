@@ -68,4 +68,5 @@ void Control_motors(RF if_reverse);
 void Check_Motor_Status(void);
 extern void (*CAN_SETMESSAGES[6])(void);
 void control_zero(void);
+void prepare_to_test(void);
 #endif

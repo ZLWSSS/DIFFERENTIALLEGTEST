@@ -45,13 +45,13 @@ uint8_t USB_DATA_2_COMMAND(USB_TX_COMMAND_T* uSB_TX_COMMAND)
 	uSB_TX_COMMAND->qd_hip = Local_BLDC_Motor->Velocity[1];
 	uSB_TX_COMMAND->qd_knee = Local_BLDC_Motor->Velocity[2];
 
-//	uSB_TX_COMMAND->c_abad = Local_BLDC_Motor->Current[0];
-//	uSB_TX_COMMAND->c_hip = Local_BLDC_Motor->Current[1];
-//	uSB_TX_COMMAND->c_knee = Local_BLDC_Motor->Current[2];
+	uSB_TX_COMMAND->c_abad = Local_BLDC_Motor->Current[0];
+	uSB_TX_COMMAND->c_hip = Local_BLDC_Motor->Current[1];
+	uSB_TX_COMMAND->c_knee = Local_BLDC_Motor->Current[2];
 	
-	uSB_TX_COMMAND->c_abad = 1;
-	uSB_TX_COMMAND->c_hip = 2;
-	uSB_TX_COMMAND->c_knee = 1;
+//	uSB_TX_COMMAND->c_abad = 1;
+//	uSB_TX_COMMAND->c_hip = 2;
+//	uSB_TX_COMMAND->c_knee = 1;
 	
 	if(stop_experiment)
 	{
