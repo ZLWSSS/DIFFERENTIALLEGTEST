@@ -630,11 +630,6 @@
               <FilePath>.\stored_data.h</FilePath>
             </File>
             <File>
-              <FileName>bsp_led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\bsp_led.h</FilePath>
-            </File>
-            <File>
               <FileName>bsp_led.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\bsp_led.c</FilePath>

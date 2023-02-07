@@ -18,6 +18,8 @@ const float initial_position[6] = {0, 0, 0, 0, 0, 0};
 const float position_vari = 0.05; //abs
 int line_iter = 0;
 int data_index = 0;
+fp32 kp = 10.;
+fp32 kd = 0.5;
 int call_loop_1;
 int call_loop_2;
 //…Ë÷√Œª÷√
@@ -217,63 +219,62 @@ void Control_motors(RF if_reverse)
 {
 	if(if_reverse == forward)
 	{
-		loop_for ++;
 		data_index = 6 * line_iter;
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index], 
 																						 -target_status[data_index + 3], 
-																						 100,
-																						 1.5,
+																						 kp,
+																						 kd,
 																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 1],  
 																						 -target_status[data_index + 4],
-																						 100,
-																						 1.5, 
+																						 kp,
+																						 kd, 
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 2], 
 																							 -target_status[data_index + 5], 
-																							 100,
-																							 1.5, 
+																							 kp,
+																							 kd, 
 																							 0, 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
 		line_iter++;
-		if(line_iter == 711)
+		if(line_iter == target_status_line)
 		{
 			HAL_TIM_Base_Stop_IT(&htim2);
 		}
 	}
 	else if (if_reverse == reverse)
 	{
-		loop_reverse++;
 		line_iter--;
 		if(line_iter == -1)
 		{
 			HAL_TIM_Base_Stop_IT(&htim2);
+			line_iter = 0;
 			return;
 		}
 		data_index = 6 * line_iter;
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index], 
 																						 -target_status[data_index + 3], 
-																						 100,
-																						 1.5,
+																						 kp,
+																						 kd,
 																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 1],  
 																						 -target_status[data_index + 4],
-																						 100,
-																						 1.5, 
+																						 kp,
+																						 kd, 
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, -target_status[data_index + 2] , 
 																							 -target_status[data_index + 5], 
-																							 100,
-																							 1.5, 
+																							 kp,
+																							 kd, 
 																							 0, 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
