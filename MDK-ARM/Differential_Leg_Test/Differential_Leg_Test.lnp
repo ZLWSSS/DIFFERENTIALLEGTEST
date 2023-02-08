@@ -1,4 +1,4 @@
---cpu=Cortex-M4.fp.sp
+--cpu=Cortex-M4.fp
 "differential_leg_test\startup_stm32f427xx.o"
 "differential_leg_test\main.o"
 "differential_leg_test\gpio.o"
@@ -47,6 +47,6 @@
 "differential_leg_test\can_bldc_motor.o"
 "differential_leg_test\usb_transmit.o"
 --strict --scatter "Differential_Leg_Test\Differential_Leg_Test.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "Differential_Leg_Test.map" -o Differential_Leg_Test\Differential_Leg_Test.axf

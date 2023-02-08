@@ -18,8 +18,8 @@ const float initial_position[6] = {0, 0, 0, 0, 0, 0};
 const float position_vari = 0.01; //abs
 int line_iter = 0;
 int data_index = 0;
-fp32 kp = 400.;
-fp32 kd = 20.;
+fp32 kp = 50.;
+fp32 kd = 5.;
 fp32 positive_or_negative = 1.;
 int call_loop_1;
 int call_loop_2;
@@ -236,21 +236,21 @@ void Control_motors(RF if_reverse)
 																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
 																						 kd,
-																						 0,
+																						 positive_or_negative * target_status[data_index + 6],
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 1],  
 																						 positive_or_negative * target_status[data_index + 4],
 																						 kp,
 																						 kd, 
-																						 0, 
+																						 positive_or_negative * target_status[data_index + 7], 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] + offset_knee, 
 																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
-																							 0, 
+																							 positive_or_negative * target_status[data_index + 8], 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
 		line_iter++;
@@ -273,21 +273,21 @@ void Control_motors(RF if_reverse)
 																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
 																						 kd,
-																						 0,
+																						 positive_or_negative * target_status[data_index + 6],
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 1],  
 																						 positive_or_negative * target_status[data_index + 4],
 																						 kp,
 																						 kd, 
-																						 0, 
+																						 positive_or_negative * target_status[data_index + 7], 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] + offset_knee, 
 																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
-																							 0, 
+																							 positive_or_negative * target_status[data_index + 8], 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
 		
