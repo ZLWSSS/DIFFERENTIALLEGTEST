@@ -24,6 +24,7 @@ fp32 positive_or_negative = 1.;
 int call_loop_1;
 int call_loop_2;
 int8_t first_run = 1;
+fp32 offset_knee = 0.7;
 //设置位置
 
 extern CAN_HandleTypeDef hcan1;
@@ -111,6 +112,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		case 0x00:
 			id_1 = rx_data[0] - 1;
 			Receive_BLDC_Data(&BLDC_Motor, rx_data, id_1);
+		  BLDC_Motor.zero_flag[id_1] = 1;
 			break;
 		case 0x0E:
 			id_1 = rx_data[0] - 1;
@@ -124,7 +126,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		case 0x0F:
 			id_1 = rx_data[0] - 1;
 			Receive_BLDC_Data(&BLDC_Motor, rx_data, id_1);
-			BLDC_Motor.error_zero_flag[id_1] = 1;
+			BLDC_Motor.zero_flag[id_1] = 1;
 			break;
 	}
 	//第一位为电机id 123 123
@@ -223,6 +225,7 @@ void Control_motors(RF if_reverse)
 	{
 		prepare_to_test();
 		delay_ms(2000);
+		first_run = 0;
 		return;
 	}
 	
@@ -243,7 +246,7 @@ void Control_motors(RF if_reverse)
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2], 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] + offset_knee, 
 																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
@@ -280,7 +283,7 @@ void Control_motors(RF if_reverse)
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
-		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] , 
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] + offset_knee, 
 																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
@@ -393,25 +396,26 @@ void Set_Zero_Position()
 
 void Check_Motor_Status()
 {
-//	uint8_t check_zero = 0;
-//	while(1)
-//	{
-//		check_zero = 0;
-//		for(uint8_t i = 0; i < 6; i++)
-//		{
+	uint8_t check_zero = 0;
+	while(1)
+	{
+		check_zero = 0;
+		for(uint8_t i = 0; i < 3; i++)
+		{
 //			if((BLDC_Motor.error_zero_flag[i]) == 1)
 //			{
 //				Error_Handler();
 //			}
-//			
-//			if(BLDC_Motor.zero_flag[i] == 1)
-//			{
-//				check_zero++;
-//			}
-//		}
-//		if(6 == check_zero)
-//			break;
-//	}
+			
+			if(BLDC_Motor.zero_flag[i] == 1)
+			{
+				check_zero++;
+			}
+		}
+		
+		if(3 == check_zero)
+			break;
+	}
 	
 	while(1)
 	{
@@ -479,7 +483,7 @@ void prepare_to_test()
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
 	delay_us(CAN_DELAY_TIME);
-	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[2] , 
+	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[2] + offset_knee, 
 																							 positive_or_negative * target_status[5], 
 																							 kp,
 																							 kd, 
