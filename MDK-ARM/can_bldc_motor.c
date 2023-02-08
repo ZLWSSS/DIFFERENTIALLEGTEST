@@ -167,9 +167,9 @@ void Receive_BLDC_Data(BLDC_Measure_TypeDef* mot,uint8_t* data, uint8_t id)
 {
 	
 	int8_t id_temp =  data[0];
-	int32_t p_int = ( data[1]<<8)| data[2];
-  int32_t v_int = ( data[3]<<4)|( data[4]>>4);
-  int32_t i_int = ((data[4]&0xF)<<8)| data[5];
+	uint16_t p_int = ( data[1]<<8)| data[2];
+  uint16_t v_int = ( data[3]<<4)|( data[4]>>4);
+  uint16_t i_int = ((data[4]&0xF)<<8)| data[5];
   /// convert ints to floats ///
   float p_temp = uint_to_float(p_int, P_MIN, P_MAX, 16);
   float v_temp = uint_to_float(v_int, V_MIN, V_MAX, 12);
@@ -194,11 +194,11 @@ void CAN_BLDC_cmd(CAN_HandleTypeDef *hcan ,uint8_t* BLDC_tx_message_data, float 
   kd = fminf(fmaxf(KD_MIN, kd), KD_MAX);
   t_ff = fminf(fmaxf(KI_MIN, t_ff), KI_MAX);
   /// convert floats to unsigned ints ///
-  int p_int = float_to_uint(p_des, P_MIN, P_MAX, 16);            
-  int v_int = float_to_uint(v_des, V_MIN, V_MAX, 12);
-  int kp_int = float_to_uint(kp, KP_MIN, KP_MAX, 12);
-  int kd_int = float_to_uint(kd, KD_MIN, KD_MAX, 12);
-	int t_int = 0;
+  uint16_t p_int = float_to_uint(p_des, P_MIN, P_MAX, 16);            
+  uint16_t v_int = float_to_uint(v_des, V_MIN, V_MAX, 12);
+  uint16_t kp_int = float_to_uint(kp, KP_MIN, KP_MAX, 12);
+  uint16_t kd_int = float_to_uint(kd, KD_MIN, KD_MAX, 12);
+	uint16_t t_int = 0;
 	if((CAN_Mesg == CAN_SETMESSAGES[2]) || (CAN_Mesg == CAN_SETMESSAGES[5]))
 		t_int = float_to_uint(t_ff, KI_MIN_1_16, KI_MAX_1_16, 12);
 	else
@@ -218,6 +218,7 @@ void CAN_BLDC_cmd(CAN_HandleTypeDef *hcan ,uint8_t* BLDC_tx_message_data, float 
 
 int loop_for = 0;
 int loop_reverse = 0;
+float test_torque = 0;
 
 void Control_motors(RF if_reverse)
 {
@@ -231,7 +232,7 @@ void Control_motors(RF if_reverse)
 	
 	if(if_reverse == forward)
 	{
-		data_index = 6 * line_iter;
+		data_index = target_status_column * line_iter;
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index], 
 																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
@@ -268,7 +269,7 @@ void Control_motors(RF if_reverse)
 			line_iter = 0;
 			return;
 		}
-		data_index = 6 * line_iter;
+		data_index = target_status_column * line_iter;
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index], 
 																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
