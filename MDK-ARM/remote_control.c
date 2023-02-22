@@ -174,7 +174,6 @@ void check_ready(void)
 					tim_triggered = 1;
 					run_direction = forward;
 					permit_forward = 0;
-					permit_reverse = 1;
 				}
 				break;
 			case 2:
@@ -189,6 +188,7 @@ void check_ready(void)
 				break;
 			default:
 				tim_triggered = 0;
+				permit_reverse = 1;
 				break;
 		}
 		

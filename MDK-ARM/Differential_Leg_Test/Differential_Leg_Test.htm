@@ -3,9 +3,9 @@
 <title>Static Call Graph - [Differential_Leg_Test\Differential_Leg_Test.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Differential_Leg_Test\Differential_Leg_Test.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Wed Feb 08 19:00:39 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Wed Feb 22 19:14:57 2023
 <BR><P>
-<H3>Maximum Stack Usage =        180 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        212 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 TIM2_IRQHandler &rArr; HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 <P>
@@ -575,9 +575,9 @@ Global Symbols
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_MspInit
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_MspInit
 <LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DATA_INIT
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDC_MOTORS_DATA_INIT
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_MspInit
 </UL>
 
 <P><STRONG><a name="[19a]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, rt_memclr_w.o(.text), UNUSED)
@@ -661,10 +661,10 @@ Global Symbols
 <P><STRONG><a name="[98]"></a>CAN_BLDC_cmd</STRONG> (Thumb, 370 bytes, Stack size 88 bytes, can_bldc_motor.o(i.CAN_BLDC_cmd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float_to_uint
+<BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float_to_uint
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fminf
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fmaxf
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;prepare_to_test
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_motors
@@ -696,8 +696,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a0]"></a>Control_motors</STRONG> (Thumb, 466 bytes, Stack size 24 bytes, can_bldc_motor.o(i.Control_motors))
-<BR><BR>[Stack]<UL><LI>Max Depth = 156<LI>Call Chain = Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<P><STRONG><a name="[a0]"></a>Control_motors</STRONG> (Thumb, 286 bytes, Stack size 32 bytes, can_bldc_motor.o(i.Control_motors))
+<BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
@@ -751,10 +751,10 @@ Global Symbols
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_CAN2_Init
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_CAN1_Init
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_Init
-<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_ResetCallback
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;manage_motors
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_motors
+<LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_Init
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_ResetCallback
 </UL>
 
 <P><STRONG><a name="[16c]"></a>HAL_CAN_ActivateNotification</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, stm32f4xx_hal_can.o(i.HAL_CAN_ActivateNotification))
@@ -788,7 +788,9 @@ Global Symbols
 <P><STRONG><a name="[97]"></a>HAL_CAN_IRQHandler</STRONG> (Thumb, 508 bytes, Stack size 40 bytes, stm32f4xx_hal_can.o(i.HAL_CAN_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = HAL_CAN_IRQHandler &rArr; HAL_CAN_RxFifo1MsgPendingCallback &rArr; Receive_BLDC_Data
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_WakeUpFromRxMsgCallback
+<BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo1MsgPendingCallback
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo0MsgPendingCallback
+<LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_WakeUpFromRxMsgCallback
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_TxMailbox2CompleteCallback
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_TxMailbox2AbortCallback
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_TxMailbox1CompleteCallback
@@ -799,8 +801,6 @@ Global Symbols
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo1FullCallback
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo0FullCallback
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_ErrorCallback
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo1MsgPendingCallback
-<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo0MsgPendingCallback
 </UL>
 <BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN2_RX1_IRQHandler
 <LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX0_IRQHandler
@@ -834,8 +834,8 @@ Global Symbols
 <P><STRONG><a name="[b2]"></a>HAL_CAN_RxFifo0MsgPendingCallback</STRONG> (Thumb, 96 bytes, Stack size 56 bytes, can_bldc_motor.o(i.HAL_CAN_RxFifo0MsgPendingCallback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = HAL_CAN_RxFifo0MsgPendingCallback &rArr; Receive_BLDC_Data
 </UL>
-<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxMessage
-<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Receive_BLDC_Data
+<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Receive_BLDC_Data
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxMessage
 </UL>
 <BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_IRQHandler
 </UL>
@@ -847,8 +847,8 @@ Global Symbols
 <P><STRONG><a name="[b4]"></a>HAL_CAN_RxFifo1MsgPendingCallback</STRONG> (Thumb, 142 bytes, Stack size 56 bytes, can_bldc_motor.o(i.HAL_CAN_RxFifo1MsgPendingCallback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = HAL_CAN_RxFifo1MsgPendingCallback &rArr; Receive_BLDC_Data
 </UL>
-<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxMessage
-<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Receive_BLDC_Data
+<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Receive_BLDC_Data
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxMessage
 </UL>
 <BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_IRQHandler
 </UL>
@@ -1152,13 +1152,13 @@ Global Symbols
 <P><STRONG><a name="[fb]"></a>HAL_PCD_Init</STRONG> (Thumb, 226 bytes, Stack size 64 bytes, stm32f4xx_hal_pcd.o(i.HAL_PCD_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = HAL_PCD_Init &rArr; HAL_PCD_MspInit &rArr; HAL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_SetCurrentMode
+<BR>[Calls]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_SetCurrentMode
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DisableGlobalInt
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DevInit
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DevDisconnect
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_CoreInit
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_MspInit
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_LL_Init
 </UL>
@@ -1321,12 +1321,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[115]"></a>HAL_TIM_ConfigClockSource</STRONG> (Thumb, 220 bytes, Stack size 16 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_ConfigClockSource))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = HAL_TIM_ConfigClockSource &rArr; TIM_TI2_ConfigInputStage
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = HAL_TIM_ConfigClockSource &rArr; TIM_ETR_SetConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_ConfigInputStage
+<BR>[Calls]<UL><LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ETR_SetConfig
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_ConfigInputStage
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI1_ConfigInputStage
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ITRx_SetConfig
-<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ETR_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM2_Init
@@ -1337,7 +1337,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[11a]"></a>HAL_TIM_IRQHandler</STRONG> (Thumb, 358 bytes, Stack size 16 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_TriggerCallback
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_PulseFinishedCallback
@@ -1360,12 +1360,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[11e]"></a>HAL_TIM_PeriodElapsedCallback</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, processing_file.o(i.HAL_TIM_PeriodElapsedCallback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 164<LI>Call Chain = HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<BR><BR>[Stack]<UL><LI>Max Depth = 196<LI>Call Chain = HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CUSTOM_HID_SendReport_FS
-<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uint32touint8
+<BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uint32touint8
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DATA_2_COMMAND
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;applications_processing
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CUSTOM_HID_SendReport_FS
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
 </UL>
@@ -1554,14 +1554,14 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427xx.o(.text)
 </UL>
 <P><STRONG><a name="[3d]"></a>TIM2_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.TIM2_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = TIM2_IRQHandler &rArr; HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = TIM2_IRQHandler &rArr; HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427xx.o(RESET)
 </UL>
 <P><STRONG><a name="[3e]"></a>TIM3_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.TIM3_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = TIM3_IRQHandler &rArr; HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = TIM3_IRQHandler &rArr; HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IRQHandler
 </UL>
@@ -2226,7 +2226,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[125]"></a>applications_processing</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, processing_file.o(i.applications_processing))
-<BR><BR>[Stack]<UL><LI>Max Depth = 156<LI>Call Chain = applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = applications_processing &rArr; Control_motors &rArr; prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_motors
 </UL>
@@ -2246,11 +2246,11 @@ Global Symbols
 <P><STRONG><a name="[13e]"></a>check_ready</STRONG> (Thumb, 198 bytes, Stack size 32 bytes, remote_control.o(i.check_ready))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = check_ready &rArr; USBD_CUSTOM_HID_SendReport_FS &rArr; USBD_CUSTOM_HID_SendReport &rArr; USBD_LL_Transmit &rArr; HAL_PCD_EP_Transmit &rArr; USB_EPStartXfer &rArr; USB_WritePacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CUSTOM_HID_SendReport_FS
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Stop_IT
+<BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Stop_IT
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uint32touint8
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DATA_2_COMMAND
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_CUSTOM_HID_SendReport_FS
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 </UL>
@@ -2292,11 +2292,11 @@ Global Symbols
 <P><STRONG><a name="[16e]"></a>init_applications</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, processing_file.o(i.init_applications))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = init_applications &rArr; can_filter_init &rArr; HAL_CAN_Start
 </UL>
-<BR>[Calls]<UL><LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_filter_init
-<LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remote_control_init
+<BR>[Calls]<UL><LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remote_control_init
 <LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_DATA_INIT
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDC_MOTORS_DATA_INIT
 <LI><a href="#[16f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_init
+<LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_filter_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2330,8 +2330,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[a1]"></a>prepare_to_test</STRONG> (Thumb, 180 bytes, Stack size 24 bytes, can_bldc_motor.o(i.prepare_to_test))
-<BR><BR>[Stack]<UL><LI>Max Depth = 132<LI>Call Chain = prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
+<P><STRONG><a name="[a1]"></a>prepare_to_test</STRONG> (Thumb, 254 bytes, Stack size 48 bytes, can_bldc_motor.o(i.prepare_to_test))
+<BR><BR>[Stack]<UL><LI>Max Depth = 156<LI>Call Chain = prepare_to_test &rArr; CAN_BLDC_cmd &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BLDC_cmd
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
@@ -2451,9 +2451,9 @@ Local Symbols
 <P><STRONG><a name="[128]"></a>UART_SetConfig</STRONG> (Thumb, 258 bytes, Stack size 16 bytes, stm32f4xx_hal_uart.o(i.UART_SetConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = UART_SetConfig &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK2Freq
+<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK2Freq
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetPCLK1Freq
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
 </UL>

@@ -12,14 +12,14 @@ BLDC_Measure_TypeDef BLDC_Motor;
 uint8_t BLDC_tx_message_data[8];
 void (*CAN_SETMESSAGES[6])(void);
 uint8_t enable = 0;
-const uint16_t CAN_DELAY_TIME = 250;
+const uint16_t CAN_DELAY_TIME = 1000;
 const uint16_t CAN_ENABLE_DELAY = 10;
 const float initial_position[6] = {0, 0, 0, 0, 0, 0}; 
 const float position_vari = 0.01; //abs
 int line_iter = 0;
 int data_index = 0;
-fp32 kp = 50.;
-fp32 kd = 5.;
+fp32 kp = 500.f;
+fp32 kd = 5.f;
 fp32 positive_or_negative = 1.;
 int call_loop_1;
 int call_loop_2;
@@ -229,7 +229,6 @@ void Control_motors(RF if_reverse)
 		first_run = 0;
 		return;
 	}
-	
 	if(if_reverse == forward)
 	{
 		data_index = target_status_column * line_iter;
@@ -237,61 +236,60 @@ void Control_motors(RF if_reverse)
 																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
 																						 kd,
-																						 positive_or_negative * target_status[data_index + 6],
+																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 1],  
 																						 positive_or_negative * target_status[data_index + 4],
 																						 kp,
 																						 kd, 
-																						 positive_or_negative * target_status[data_index + 7], 
+																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] + offset_knee, 
 																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
-																							 positive_or_negative * target_status[data_index + 8], 
+																							 0, 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
 		line_iter++;
 		if(line_iter == target_status_line)
 		{
+			line_iter = 1000;
 			HAL_TIM_Base_Stop_IT(&htim2);
 		}
 	}
 	else if (if_reverse == reverse)
 	{
-		line_iter--;
-		if(line_iter == -1)
-		{
-			HAL_TIM_Base_Stop_IT(&htim2);
-			line_iter = 0;
-			return;
-		}
 		data_index = target_status_column * line_iter;
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index], 
 																						 positive_or_negative * target_status[data_index + 3], 
 																						 kp,
 																						 kd,
-																						 positive_or_negative * target_status[data_index + 6],
+																						 0,
 																						 CAN_SETMESSAGES[0]);	
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 1],  
 																						 positive_or_negative * target_status[data_index + 4],
 																						 kp,
 																						 kd, 
-																						 positive_or_negative * target_status[data_index + 7], 
+																						 0, 
 																						 CAN_SETMESSAGES[1]);
 		delay_us(CAN_DELAY_TIME);
 		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[data_index + 2] + offset_knee, 
 																							 positive_or_negative * target_status[data_index + 5], 
 																							 kp,
 																							 kd, 
-																							 positive_or_negative * target_status[data_index + 8], 
+																							 0, 
 																							 CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
-		
+		line_iter++;
+		if(line_iter == target_status_line)
+		{
+			line_iter = 1000;
+			HAL_TIM_Base_Stop_IT(&htim2);
+		}
 	}
 	else
 	{
@@ -464,33 +462,39 @@ void control_zero()
 																						 0,
 																						 0,
 																						 0, 
-																							 CAN_SETMESSAGES[2]);									 
+																						CAN_SETMESSAGES[2]);									 
 		delay_us(CAN_DELAY_TIME);
 }
 
 void prepare_to_test()
 {
-	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[0], 
-																						 positive_or_negative * target_status[3], 
+	fp32 start_position[3] = {BLDC_Motor.Position[0], BLDC_Motor.Position[1], BLDC_Motor.Position[2]};
+	fp32 i = 0;
+	while(i != 2000.f)
+	{
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, (positive_or_negative * target_status[0] - start_position[0])*i/2000.f, 
+																						 0, 
 																						 kp,
 																						 kd,
 																						 0,
 																						 CAN_SETMESSAGES[0]);	
-	delay_us(CAN_DELAY_TIME);
-	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[1],  
-																						 positive_or_negative * target_status[4],
+		delay_us(CAN_DELAY_TIME);
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, (positive_or_negative * target_status[1] - start_position[1])*i/2000.f,  
+																						 0,
 																						 kp,
 																						 kd, 
 																						 0, 
 																						 CAN_SETMESSAGES[1]);
-	delay_us(CAN_DELAY_TIME);
-	CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, positive_or_negative * target_status[2] + offset_knee, 
-																							 positive_or_negative * target_status[5], 
+		delay_us(CAN_DELAY_TIME);
+		CAN_BLDC_cmd(&hcan1, BLDC_tx_message_data, (positive_or_negative * target_status[2] + offset_knee - start_position[2])*i/2000.f, 
+																							 0, 
 																							 kp,
 																							 kd, 
 																							 0, 
 																							 CAN_SETMESSAGES[2]);									 
-	delay_us(CAN_DELAY_TIME);
+		delay_us(CAN_DELAY_TIME);
+		i+=1.f;
+	}
 }
 
 	
